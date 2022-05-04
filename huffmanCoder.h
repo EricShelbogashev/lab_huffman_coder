@@ -10,7 +10,7 @@ exitCodes huffmanEncodeToBuff(FILE *inStream, FILE *outStream) {
         probTable[i] = 0;
     uint32_t nodeArrSize = 0;
 
-    // Frequency initialize
+    // Frequency initialize.
     uint8_t tmp;
     for (int i = 0; i < length; ++i) {
         tmp = getc(inStream);
@@ -19,7 +19,7 @@ exitCodes huffmanEncodeToBuff(FILE *inStream, FILE *outStream) {
         probTable[tmp] += 1;
     }
 
-    // Инициализация списка с кодами
+    // Code list initialization.
     huffmanCode codesList[UCHAR_MAX];
     uint8_t *memSet = malloc(MAX_CODE_LENGTH * nodeArrSize * sizeof(uint8_t));
 
@@ -27,7 +27,7 @@ exitCodes huffmanEncodeToBuff(FILE *inStream, FILE *outStream) {
         return OUT_OF_MEMORY;
     }
 
-    // Инициализация массива для дерева
+    // Tree array initialization.
     priorityQueueList *nodePriorQue = NULL;
     priorityQueueListInit(&nodePriorQue);
     huffmanNode *tmpNode = NULL;
@@ -47,7 +47,7 @@ exitCodes huffmanEncodeToBuff(FILE *inStream, FILE *outStream) {
         }
     }
 
-    // построение дерева - алгоритм Хаффмана
+    // Tree building - Huffman algorithm.
     huffmanNode *a = NULL, *b = NULL, *c = NULL;
     for (int i = 0; i < nodeArrSize - 1; ++i) {
         priorityQueueListPopNode(nodePriorQue, &a);
@@ -58,7 +58,7 @@ exitCodes huffmanEncodeToBuff(FILE *inStream, FILE *outStream) {
         c->frequency = a->frequency + b->frequency;
         priorityQueueListInsert(nodePriorQue, c);
     }
-    // Инициализация буффера для вывода в файл
+    // Buffer initialization for file output.
     binaryBuffer *binBuf = NULL;
     binaryBufferInit(&binBuf, outStream, w);
 
@@ -67,7 +67,7 @@ exitCodes huffmanEncodeToBuff(FILE *inStream, FILE *outStream) {
     uint8_t parentCode = 0;
     uint8_t codeLen = 0;
 
-    //Получение кодов через дерево
+    // Getting codes through the tree.
     huffmanNodeInitPrefixCodes(codesList, parentNode, &parentCode, codeLen, binBuf);
 
     uint8_t curSmb;
