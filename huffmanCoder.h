@@ -1,7 +1,7 @@
 #ifndef LAB_HUFFMAN_CODER_HUFFMANCODER_H
 
 exitCodes huffmanEncodeToBuff(FILE *inStream, FILE *outStream) {
-    int_fast32_t startPos = ftell(inStream);
+    int_fast32_t startPos = ftell(inStream  );
     fseek(inStream, 0L, SEEK_END);
     uint64_t length = ftell(inStream) - startPos;
     fseek(inStream, startPos, SEEK_SET);
